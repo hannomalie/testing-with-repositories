@@ -29,5 +29,5 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
-    systemProperty("test.prefer-in-memory", project.property("test.prefer-in-memory")?.toString() ?: "true")
+    systemProperty("test.prefer-in-memory", project.findProperty("test.prefer-in-memory")?.toString() ?: "true")
 }

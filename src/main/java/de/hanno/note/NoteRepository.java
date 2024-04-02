@@ -10,6 +10,8 @@ public interface NoteRepository {
     void add(Note note);
     List<Note> getAll();
 
+    void addAll(Note... notes);
+
     class InMemoryNoteRepository implements NoteRepository {
         private final ArrayList<Note> notes = new ArrayList<>();
         @Override
@@ -27,7 +29,8 @@ public interface NoteRepository {
             return new ArrayList<>(notes);
         }
 
-        public void addAll(Note ...notes) {
+        @Override
+        public void addAll(Note... notes) {
             Arrays.stream(notes).forEach(this::add);
         }
     }

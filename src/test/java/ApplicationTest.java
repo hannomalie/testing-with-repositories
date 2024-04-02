@@ -13,13 +13,11 @@ import static de.hanno.Main.createApp;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(NoteRepositoryExtension.class)
-public class MainTest {
+public class ApplicationTest {
 
     @Test
     void existingNoteIsFound(NoteRepository repository) {
-        repository.add(new Note(0, "asd"));
-        repository.add(new Note(1, "ftz"));
-        repository.add(new Note(2, "jek"));
+        repository.addAll(new Note(0, "asd"), new Note(1, "ftz"), new Note(2, "jek"));
 
         JavalinTest.test(createApp(repository), (server, client) -> {
             assertThat(client.get("/notes/2").code()).isEqualTo(200);

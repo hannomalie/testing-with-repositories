@@ -48,6 +48,16 @@ public class PostgresNoteRepository implements NoteRepository {
         return jdbi.withExtension(NoteDao.class, NoteDao::getAll);
     }
 
+    @Override
+    public void addAll(Note... notes) {
+        jdbi.withExtension(NoteDao.class, dao -> {
+            for (Note note : notes) {
+                dao.add(note);
+            }
+            return null;
+        });
+    }
+
     // https://github.com/jdbi/jdbi/issues/1822
     private static class RecordAndAnnotatedConstructorMapper
             implements RowMapperFactory

@@ -8,9 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
+import java.util.Optional;
 
 import static de.hanno.Main.createApp;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(NoteRepositoryExtension.class)
 public class ApplicationTest {
@@ -25,20 +28,29 @@ public class ApplicationTest {
     }
 
     @Test
-    void absentNoteIsNotFound(NoteRepository repository) {
-        JavalinTest.test(createApp(repository), (server, client) -> {
-            assertThat(client.get("/notes/2").code()).isEqualTo(404);
-        });
-
-    }
-
-    @Test
     void existingNoteIsFound(InMemoryNoteRepository repository) {
         repository.addAll(new Note(0, "asd"), new Note(1, "ftz"), new Note(2, "jek"));
 
         JavalinTest.test(createApp(repository), (server, client) -> {
             assertThat(client.get("/notes/2").code()).isEqualTo(200);
         });
+    }
+
+    @Test
+    void existingNoteIsFound() {
+        var repository = mock(NoteRepository.class);
+        when(repository.find(2)).thenReturn(Optional.of(new Note(2, "jek")));
+
+        JavalinTest.test(createApp(repository), (server, client) -> {
+            assertThat(client.get("/notes/2").code()).isEqualTo(200);
+        });
+    }
+    @Test
+    void absentNoteIsNotFound(NoteRepository repository) {
+        JavalinTest.test(createApp(repository), (server, client) -> {
+            assertThat(client.get("/notes/2").code()).isEqualTo(404);
+        });
+
     }
 
     @Test

@@ -1,5 +1,5 @@
 plugins {
-    id("java")
+    kotlin("jvm") version "1.9.23"
 }
 
 group = "de.hanno.testing-repositories"
@@ -15,6 +15,7 @@ dependencies {
     implementation("org.postgresql:postgresql:42.6.0")
 
     implementation("org.jdbi:jdbi3-core:3.45.1")
+    implementation("org.jdbi:jdbi3-kotlin:3.45.1")
     implementation("org.jdbi:jdbi3-sqlobject:3.45.1")
 
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
